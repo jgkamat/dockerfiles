@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM phusion/baseimage:latest
 
 # This is a dockerfile that builds an owncloud service and sets it up as much as possible!
 # to build: 'docker build -t jgkamat/owncloud .'
