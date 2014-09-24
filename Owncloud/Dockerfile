@@ -11,7 +11,7 @@ RUN apt-get update && apt-get -y install apt-utils wget curl htop iputils-ping v
 
 # copy ssh key of current computer onto docker container
 # if keys are not available, then you must run ssh-keygen before running this script
-ADD ~/.ssh/id_rsa.pub /tmp/your_key.pub
+ADD id_rsa.pub /tmp/your_key.pub
 RUN cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys && rm -f /tmp/your_key.pub
 
 # add owncloud repository and install
@@ -22,6 +22,6 @@ RUN apt-get update
 RUN apt-get install -y -q owncloud mysql-server
 
 # set admin password to 'toor'
-mysqladmin -u root password 'toor'
+RUN mysqladmin -u root password 'toor'
 
-
+EXPOSE 80
