@@ -11,6 +11,10 @@ RUN apt-get update && apt-get -y install apt-utils wget curl htop iputils-ping v
 
 # add owncloud repository and install
 RUN sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud.list"
+
+# Fix authentication issues
+RUN wget http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_14.04/Release.key
+RUN sudo apt-key add - < Release.key
 RUN apt-get update
 
 # If you want, you can change mysql to anything you want!
