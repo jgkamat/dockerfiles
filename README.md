@@ -3,4 +3,4 @@ Docker
 
 This is a public repository where all of my current docker work will be.
 
-You probably shouldnt be looking at this, but if you find somthing useful, feel free to use it as long as you follow the GPL V3
+This is probably not what you were looking for, but if you find somthing useful, feel free to use it as long as you follow the GPL V3
