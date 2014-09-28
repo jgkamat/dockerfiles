@@ -32,9 +32,6 @@ RUN apt-get install -y owncloud
 
 # copy ssh key of current computer onto docker container
 # if keys are not available, then you must run ssh-keygen before running this script
-ADD id_rsa.pub /tmp/id_rsa.pub
-RUN mkdir -p /root/.ssh/
-RUN cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys && rm -f /tmp/id_rsa.pub
 
 # Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
 RUN rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
@@ -68,7 +65,6 @@ RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 ENV container docker
 
 # set an INSECURE password
-# TODO fix this!
 RUN echo 'root:toor' | chpasswd
 
 # Startup Scripts
