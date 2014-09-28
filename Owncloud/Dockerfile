@@ -14,7 +14,7 @@ ADD setupScripts/init-fake.conf /etc/init/fake-container-events.conf
 ENV DEBIAN_FRONTEND noninteractive
 
 # setup apt tools and other goodies we want
-RUN apt-get update && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m
+RUN apt-get update && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m ssh
 
 # add owncloud repository and install
 RUN sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud.list"
@@ -24,6 +24,8 @@ RUN wget http://download.opensuse.org/repositories/isv:ownCloud:community/xUbunt
 RUN sudo apt-key add - < Release.key
 RUN apt-get update --fix-missing
 RUN apt-get -y upgrade
+
+# Assuming sqlite is used, not mysql or postgresql
 
 # Install owncloud
 RUN apt-get install -y owncloud
