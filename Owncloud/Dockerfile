@@ -30,9 +30,6 @@ RUN apt-get -y upgrade
 # Install owncloud
 RUN apt-get install -y owncloud
 
-# copy ssh key of current computer onto docker container
-# if keys are not available, then you must run ssh-keygen before running this script
-
 # Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
 RUN rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
 
@@ -71,8 +68,10 @@ RUN echo 'root:toor' | chpasswd
 ADD setupScripts/rc.local /etc/rc.local
 RUN chmod 755 /etc/rc.local
 
-# ports 80 and 443 should be published in the command!
+# ports 80 and 443 should be published in the command to the host!
 EXPOSE 22
+EXPOSE 80
+EXPOSE 443
 
 # Set up init
 CMD ["/sbin/init"]
