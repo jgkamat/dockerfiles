@@ -8,13 +8,13 @@ FROM ubuntu:14.04
 
 # The base image changes policy-rc.d to stop services from being configured by apt. We change this to mirror stock Ubuntu.
 RUN rm /usr/sbin/policy-rc.d
-ADD init-fake.conf /etc/init/fake-container-events.conf
+ADD setupScripts/init-fake.conf /etc/init/fake-container-events.conf
 
 # Setup apt to be happy with no console input
 ENV DEBIAN_FRONTEND noninteractive
 
 # setup apt tools and other goodies we want
-RUN apt-get update && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils
+RUN apt-get update && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m
 
 # add owncloud repository and install
 RUN sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud.list"
@@ -25,17 +25,14 @@ RUN sudo apt-key add - < Release.key
 RUN apt-get update --fix-missing
 RUN apt-get -y upgrade
 
-
-#Stop password requests from apt for mysql (password is toor)
-# If you want, you can change mysql to anything you want!
-
-RUN bash -c "debconf-set-selections <<< 'mysql-server mysql-server/root_password password toor' && debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password toor' && apt-get install -y mysql-server ssh"
+# Install owncloud
 RUN apt-get install -y owncloud
 
 # copy ssh key of current computer onto docker container
 # if keys are not available, then you must run ssh-keygen before running this script
-ADD id_rsa.pub /tmp/your_key.pub
-RUN cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys && rm -f /tmp/your_key.pub
+ADD id_rsa.pub /tmp/id_rsa.pub
+RUN mkdir -p /root/.ssh/
+RUN cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys && rm -f /tmp/id_rsa.pub
 
 # Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
 RUN rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
@@ -64,6 +61,17 @@ RUN /usr/sbin/update-rc.d -f ondemand remove; \
 
 # allow login with password
 RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# let Upstart know it's in a container
+ENV container docker
+
+# set an INSECURE password
+# TODO fix this!
+RUN echo 'root:toor' | chpasswd
+
+# Startup Scripts
+ADD setupScripts/rc.local /etc/rc.local
+RUN chmod 755 /etc/rc.local
 
 # ports 80 and 443 should be published in the command!
 EXPOSE 22
