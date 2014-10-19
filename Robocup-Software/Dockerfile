@@ -12,7 +12,7 @@ WORKDIR /root
 # clone repo
 RUN git clone git://github.com/RoboJackets/robocup-software
 
-# install nessicary software
+# install necessary software
 WORKDIR /root/robocup-software
 RUN yes | util/ubuntu-setup
 
