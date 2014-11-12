@@ -10,9 +10,19 @@ ENV DEBIAN_FRONTEND noninteractive
 # setup apt tools and other goodies we want
 RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh
 
-# setup some large things that will *always* be part of robocup's repo
-#TODO link this up to ubuntu-packages.txt somehow?
-RUN apt-get update --fix-missing && apt-get -y install python3-dev build-essential gtkwave clang doxygen qt5-default python-usb
+
+# clone and run ubuntu-setup to shave some time off. This will be run again in the robocup-software to compensate for changes to the setup script.
+
+# do everything in tmp
+WORKDIR /tmp
+# clone repo
+RUN git clone git://github.com/RoboJackets/robocup-software
+#TODO make ubuntu-setup take a force yes argument
+RUN yes | /tmp/robocup-software/util/ubuntu-setup
+# delete the repo in tmp
+RUN rm -rf /tmp/robocup-software
+# try to make dockerimages smaller
+RUN apt-get clean
 
 
 # Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
