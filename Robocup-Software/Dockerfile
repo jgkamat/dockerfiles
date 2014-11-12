@@ -1,11 +1,12 @@
 # Use phusion/baseimage if problems arise
 FROM ubuntu:14.04
+MAINTAINER Jay Kamat
 
 # Setup apt to be happy with no console input
 ENV DEBIAN_FRONTEND noninteractive
 
 # setup apt tools and other goodies we want
-RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons cmake ssh
+RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh
 
 
 # Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
