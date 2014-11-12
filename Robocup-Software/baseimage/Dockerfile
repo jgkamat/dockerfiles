@@ -10,6 +10,10 @@ ENV DEBIAN_FRONTEND noninteractive
 # setup apt tools and other goodies we want
 RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh
 
+# setup some large things that will *always* be part of robocup's repo
+#TODO link this up to ubuntu-packages.txt somehow?
+RUN apt-get update --fix-missing && apt-get -y install python3-dev build-essential gtkwave clang doxygen qt5-default python-usb
+
 
 # Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
 RUN rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
