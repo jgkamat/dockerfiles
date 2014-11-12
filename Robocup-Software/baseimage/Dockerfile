@@ -13,16 +13,18 @@ RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop 
 
 # clone and run ubuntu-setup to shave some time off. This will be run again in the robocup-software to compensate for changes to the setup script.
 
-# do everything in tmp
-WORKDIR /tmp
+# do everything in root's home
+WORKDIR /root
 # clone repo
 RUN git clone git://github.com/RoboJackets/robocup-software
 #TODO make ubuntu-setup take a force yes argument
-RUN yes | /tmp/robocup-software/util/ubuntu-setup
-# delete the repo in tmp
-RUN rm -rf /tmp/robocup-software
+RUN yes | /root/robocup-software/util/ubuntu-setup
 # try to make dockerimages smaller
 RUN apt-get clean
+
+# Do a baseline make to speed up future compiles
+WORKDIR /root/robocup-software
+RUN make && make robot
 
 
 # Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
