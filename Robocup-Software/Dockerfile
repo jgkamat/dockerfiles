@@ -8,7 +8,15 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons cmake
 
 # Enable insecure key
-# to logon, run: ssh insecure_key root@<IP address>
+j
+#LOGON INSTRUCTIONS:
+## Download the insecure private key
+#curl -o insecure_key -fSL https://github.com/phusion/baseimage-docker/raw/master/image/insecure_key
+#chmod 600 insecure_key
+
+# Login to the container
+#ssh -i insecure_key root@<IP address>
+
 RUN /usr/sbin/enable_insecure_key
 
 # all commands will go to root's home folder
