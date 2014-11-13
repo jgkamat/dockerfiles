@@ -4,11 +4,15 @@ MAINTAINER Jay Kamat
 
 # This dockerimage will serve as a 'static' base for the robocup dockerimage to reduce build time
 
+# The base image changes policy-rc.d to stop services from being configured by apt. We change this to mirror stock Ubuntu.
+RUN rm /usr/sbin/policy-rc.d
+ADD setupScripts/init-fake.conf /etc/init/fake-container-events.conf
+
 # Setup apt to be happy with no console input
 ENV DEBIAN_FRONTEND noninteractive
 
 # setup apt tools and other goodies we want
-RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh
+RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh screen
 
 
 # clone and run ubuntu-setup to shave some time off. This will be run again in the robocup-software to compensate for changes to the setup script.
@@ -55,3 +59,13 @@ RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 ENV container docker
 # set an INSECURE password for root
 RUN echo 'root:toor' | chpasswd
+
+# run startup scripts
+ADD setupScripts/rc.local /etc/rc.local
+RUN chmod 755 /etc/rc.local
+
+# open up ssh server
+EXPOSE 22
+
+# use the init stuff
+CMD ["/sbin/init"]
