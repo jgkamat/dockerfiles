@@ -19,7 +19,6 @@ RUN yes | util/ubuntu-setup
 # Build
 RUN make
 RUN make robot
-WORKDIR /root/robocup-software
 
 # try to make dockerimages smaller
 RUN apt-get clean
