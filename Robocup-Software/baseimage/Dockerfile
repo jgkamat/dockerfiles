@@ -4,67 +4,40 @@ MAINTAINER Jay Kamat
 
 # This dockerimage will serve as a 'static' base for the robocup dockerimage to reduce build time
 
-# The base image changes policy-rc.d to stop services from being configured by apt. We change this to mirror stock Ubuntu.
-RUN rm /usr/sbin/policy-rc.d
-ADD setupScripts/init-fake.conf /etc/init/fake-container-events.conf
-
 # Setup apt to be happy with no console input
 ENV DEBIAN_FRONTEND noninteractive
 
 # setup apt tools and other goodies we want
-RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh screen && apt-get clean
+RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons screen && apt-get clean
 
+# set up user <this is for running soccer later on>
+# Replace 1000 with your user / group id
+RUN export uid=1000 gid=1000 && \
+    mkdir -p /home/developer && \
+    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
+    echo "developer:x:${uid}:" >> /etc/group && \
+    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+    chmod 0440 /etc/sudoers.d/developer && \
+    chown ${uid}:${gid} -R /home/developer
+
+USER developer
+ENV HOME /home/developer
 
 # clone and run ubuntu-setup to shave some time off. This will be run again in the robocup-software to compensate for changes to the setup script.
 
 # do everything in root's home
-WORKDIR /root
+WORKDIR /home/developer
 # clone repo
 RUN git clone git://github.com/RoboJackets/robocup-software
 #TODO make ubuntu-setup take a force yes argument
-RUN yes | /root/robocup-software/util/ubuntu-setup && apt-get clean
+RUN yes | robocup-software/util/ubuntu-setup && apt-get clean
 # try to make dockerimages smaller
 
 # Do a baseline make to speed up future compiles
-WORKDIR /root/robocup-software
+WORKDIR /home/developer/robocup-software
 RUN make && make robot
 
+# soccer needs to be run in current directory for some reason :/
+WORKDIR /home/developer/robocup-software/run
 
-# Get Upstart binary working. We remove a fake symlink to initctl and restore the original.
-RUN rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
-# generate a nice UTF-8 locale for our use
-RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
-# Remove some services that don't make sense in containers.
-RUN /usr/sbin/update-rc.d -f ondemand remove; \
-for f in \
-/etc/init/u*.conf \
-/etc/init/mounted-dev.conf \
-/etc/init/mounted-proc.conf \
-/etc/init/mounted-run.conf \
-/etc/init/mounted-tmp.conf \
-/etc/init/mounted-var.conf \
-/etc/init/hostname.conf \
-/etc/init/tty*.conf \
-/etc/init/plymouth*.conf \
-/etc/init/hwclock*.conf \
-/etc/init/module*.conf\
-; do \
-dpkg-divert --local --rename --add "$f"; \
-done; \
-echo '# /lib/init/fstab: cleared out for bare-bones Docker' > /lib/init/fstab
-# allow login with password
-RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-# let Upstart know it's in a container
-ENV container docker
-# set an INSECURE password for root
-RUN echo 'root:toor' | chpasswd
-
-# run startup scripts
-ADD setupScripts/rc.local /etc/rc.local
-RUN chmod 755 /etc/rc.local
-
-# open up ssh server
-EXPOSE 22
-
-# use the init stuff
-CMD ["/sbin/init"]
+CMD simulator & soccer -sim
