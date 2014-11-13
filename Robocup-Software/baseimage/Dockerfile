@@ -8,7 +8,7 @@ MAINTAINER Jay Kamat
 ENV DEBIAN_FRONTEND noninteractive
 
 # setup apt tools and other goodies we want
-RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons screen && apt-get clean
+RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common sudo scons screen && apt-get clean
 
 # set up user <this is for running soccer later on>
 # Replace 1000 with your user / group id
@@ -30,7 +30,7 @@ WORKDIR /home/developer
 # clone repo
 RUN git clone git://github.com/RoboJackets/robocup-software
 #TODO make ubuntu-setup take a force yes argument
-RUN yes | robocup-software/util/ubuntu-setup && apt-get clean
+RUN yes | robocup-software/util/ubuntu-setup && sudo apt-get clean
 # try to make dockerimages smaller
 
 # Do a baseline make to speed up future compiles
@@ -40,4 +40,4 @@ RUN make && make robot
 # soccer needs to be run in current directory for some reason :/
 WORKDIR /home/developer/robocup-software/run
 
-CMD simulator & soccer -sim
+CMD /home/developer/robocup-software/run/simulator & /home/developer/robocup-software/run/soccer -sim
