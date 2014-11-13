@@ -12,7 +12,7 @@ ADD setupScripts/init-fake.conf /etc/init/fake-container-events.conf
 ENV DEBIAN_FRONTEND noninteractive
 
 # setup apt tools and other goodies we want
-RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh screen
+RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common scons ssh screen && apt-get clean
 
 
 # clone and run ubuntu-setup to shave some time off. This will be run again in the robocup-software to compensate for changes to the setup script.
@@ -22,9 +22,8 @@ WORKDIR /root
 # clone repo
 RUN git clone git://github.com/RoboJackets/robocup-software
 #TODO make ubuntu-setup take a force yes argument
-RUN yes | /root/robocup-software/util/ubuntu-setup
+RUN yes | /root/robocup-software/util/ubuntu-setup && apt-get clean
 # try to make dockerimages smaller
-RUN apt-get clean
 
 # Do a baseline make to speed up future compiles
 WORKDIR /root/robocup-software
