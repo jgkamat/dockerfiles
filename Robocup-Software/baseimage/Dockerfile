@@ -34,10 +34,10 @@ RUN yes | robocup-software/util/ubuntu-setup && sudo apt-get clean
 # try to make dockerimages smaller
 
 # TEMPORARY fix for not including firmware toolchain in ubunut-setup
-RUN sudo apt-get remove binutils-arm-none-eabi gcc-arm-none-eabi &&\
+RUN sudo apt-get -y remove binutils-arm-none-eabi gcc-arm-none-eabi &&\
         sudo add-apt-repository ppa:terry.guo/gcc-arm-embedded &&\
         sudo apt-get update &&\
-        sudo apt-get install gcc-arm-none-eabi
+        sudo apt-get -y install gcc-arm-none-eabi
 
 # Do a baseline make to speed up future compiles
 WORKDIR /home/developer/robocup-software
