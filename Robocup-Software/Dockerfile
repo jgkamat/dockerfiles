@@ -18,7 +18,7 @@ RUN yes | util/ubuntu-setup && sudo apt-get clean
 
 # Build
 RUN make
-RUN make robot
+RUN make robot2015
 
 WORKDIR /home/developer/robocup-software/run
 

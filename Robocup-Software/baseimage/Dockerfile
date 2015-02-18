@@ -35,7 +35,7 @@ RUN yes | robocup-software/util/ubuntu-setup && sudo apt-get clean
 
 # Do a baseline make to speed up future compiles
 WORKDIR /home/developer/robocup-software
-RUN make && make robot
+RUN make && make robot2015
 
 # soccer needs to be run in current directory for some reason :/
 WORKDIR /home/developer/robocup-software/run
