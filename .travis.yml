@@ -1,0 +1,12 @@
+language: cpp
+compiler: gcc
+
+
+before_script:
+  - './installScripts/ubuntu12.sh'
+
+script: 'cd Owncloud && ./buildDockerfile.sh'
+
+notifications:
+  email: false
+
