@@ -16,8 +16,6 @@ RUN git reset --hard origin/master
 #TODO make ubuntu-setup take a force yes argument
 RUN yes | util/ubuntu-setup && sudo apt-get clean
 
-RUN sudo apt-get install libqt5svg5 libqt5svg5-dev python-pyqt5 python3-pyqt5
-
 # Build
 RUN make
 RUN make robot2015
