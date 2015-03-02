@@ -14,7 +14,7 @@ RUN git fetch origin master
 RUN git reset --hard origin/master
 
 #TODO make ubuntu-setup take a force yes argument
-RUN yes | util/ubuntu-setup && sudo apt-get clean
+RUN util/ubuntu-setup --firmware -y && sudo apt-get clean
 
 # Build
 RUN make
