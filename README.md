@@ -1,4 +1,4 @@
-Docker
+Docker  [![Build Status](https://travis-ci.org/jgkamat/docker.svg?branch=master)](https://travis-ci.org/jgkamat/docker)
 ======
 
 This is a public repository where all of my current docker work will be.
