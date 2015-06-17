@@ -34,7 +34,7 @@ RUN apt-get install -y owncloud
 RUN rm /sbin/initctl; dpkg-divert --rename --remove /sbin/initctl
 
 # generate a nice UTF-8 locale for our use
-RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
+# RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
 
 # Remove some services that don't make sense in containers.
 RUN /usr/sbin/update-rc.d -f ondemand remove; \
