@@ -1,4 +1,4 @@
-Docker  [![Build Status](https://circleci.com/gh/jgkamat/docker.svg?&style=svg&circle-token=eac4b6cec682839a9e819f1a9dd441128d9350d3)](https://circleci.com/gh/jgkamat/docker)
+Docker  [![Build Status](https://circleci.com/gh/jgkamat/dockerfiles.svg?&style=svg)](https://circleci.com/gh/jgkamat/dockerfiles)
 ======
 
 This is a public repository where all of my current docker work will be.
