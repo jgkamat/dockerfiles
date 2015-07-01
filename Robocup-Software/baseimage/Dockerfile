@@ -31,7 +31,7 @@ WORKDIR /home/developer
 RUN git clone git://github.com/RoboJackets/robocup-software
 
 WORKDIR /home/developer/robocup-software
-RUN util/ubuntu-setup --yes --firmware && sudo apt-get clean
+RUN util/ubuntu-setup --yes --firmware || true && sudo apt-get clean
 # try to make dockerimages smaller
 
 # Do a baseline make to speed up future compiles
