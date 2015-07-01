@@ -29,8 +29,9 @@ ENV HOME /home/developer
 WORKDIR /home/developer
 # clone repo
 RUN git clone git://github.com/RoboJackets/robocup-software
-#TODO make ubuntu-setup take a force yes argument
-RUN robocup-software/util/ubuntu-setup --yes --firmware && sudo apt-get clean
+
+WORKDIR /home/developer/robocup-software
+RUN util/ubuntu-setup --yes --firmware && sudo apt-get clean
 # try to make dockerimages smaller
 
 # Do a baseline make to speed up future compiles
