@@ -3,12 +3,11 @@ FROM robojackets/robocup-baseimage:master
 MAINTAINER Jay Kamat github@jgkamat.33mail.com
 
 WORKDIR /home/developer
-RUN git clone git@github.com:RoboJackets/robocup-software.git
+RUN git clone https://github.com/RoboJackets/robocup-software.git
 WORKDIR /home/developer/robocup-software
 
 # Build
 RUN make
-RUN make robot2015
 
 WORKDIR /home/developer/robocup-software/run
 # to run X11 Server
