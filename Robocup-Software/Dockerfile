@@ -10,7 +10,6 @@ WORKDIR /home/developer/robocup-software
 # RUN git submodule update --init
 RUN make
 
-WORKDIR /home/developer/robocup-software/run
 # to run X11 Server
 # docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix <COMMAND NAME>
-CMD [ "/home/developer/robocup-software/run/simulator & /home/developer/robocup-software/run/soccer -sim" ]
+CMD [ "-c", "make run-sim" ]
