@@ -3,7 +3,7 @@
 
 FROM ubuntu:14.04
 
-RUN apt-get update && apt-get install -y firefox
+RUN apt-get update >/dev/null && apt-get install -y firefox >/dev/null
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \

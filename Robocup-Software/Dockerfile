@@ -7,7 +7,7 @@ RUN git clone https://github.com/RoboJackets/robocup-software.git
 WORKDIR /home/developer/robocup-software
 
 # Build
-RUN git submodule update --init
+# RUN git submodule update --init
 RUN make
 
 WORKDIR /home/developer/robocup-software/run
