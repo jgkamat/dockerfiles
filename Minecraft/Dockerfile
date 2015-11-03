@@ -4,8 +4,7 @@ MAINTAINER Jay Kamat github@jgkamat.33mail.com
 
 
 # setup apt tools and other goodies we want
-RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils
-w3m git software-properties-common sudo rlwrap && apt-get clean
+RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop iputils-ping vim-nox less debconf-utils w3m git software-properties-common sudo rlwrap && apt-get clean
 
 
 RUN mkdir -p /root/server
