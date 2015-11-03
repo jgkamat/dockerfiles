@@ -8,8 +8,7 @@ RUN apt-get update --fix-missing && apt-get -y install apt-utils wget curl htop 
 
 
 RUN mkdir -p /root/server
-ADD https://s3.amazonaws.com/Minecraft.Download/versions/1.8.8/minecraft_server.1.8.8.jar
-/root/server/minecraft_server.jar
+ADD https://s3.amazonaws.com/Minecraft.Download/versions/1.8.8/minecraft_server.1.8.8.jar /root/server/minecraft_server.jar
 
 # Add a docker init system and use it
 ADD https://github.com/ohjames/smell-baron/releases/download/v0.1.0/smell-baron /bin/smell-baron
