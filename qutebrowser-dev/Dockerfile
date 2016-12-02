@@ -1,6 +1,6 @@
 FROM fedora:25
 
-RUN dnf install python3-pyqt5-qtwebengine qt5-qtwebengine
+RUN dnf install -y python3-pyqt5 qt5-qtwebengine
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
