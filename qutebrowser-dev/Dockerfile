@@ -1,6 +1,6 @@
 FROM fedora:25
 
-RUN dnf install -y python3-qt5-webengine qt5-qtwebengine python3-qt5-webkit git sudo
+RUN dnf install -y python3-qt5-webengine qt5-qtwebengine python3-qt5-webkit git sudo liberation-fonts
 
 
 # Replace 1000 with your user / group id
@@ -21,3 +21,5 @@ CMD ["/usr/bin/qutebrowser", "--backend", "webengine"]
 
 # RUN WITH
 # docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ~/.local:/home/developer/.local -v ~/.config:/home/developer/.config jgkamat/qutebrowser-dev
+# For Sound
+# docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ~/.local:/home/developer/.local -v ~/.config:/home/developer/.config -v /dev/snd:/dev/snd --privileged jgkamat/qutebrowser-dev
