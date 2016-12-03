@@ -1,6 +1,7 @@
 FROM fedora:25
 
-RUN dnf install -y python3-pyqt5 qt5-qtwebengine
+RUN dnf install -y python3-qt5-webengine qt5-qtwebengine python3-qt5-webkit git sudo
+
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
@@ -13,7 +14,10 @@ RUN export uid=1000 gid=1000 && \
 
 USER developer
 ENV HOME /home/developer
+WORKDIR /home/developer
+
+RUN git clone https://github.com/The-Compiler/qutebrowser.git && sudo pip3 install qutebrowser/
 CMD ["/usr/bin/qutebrowser", "--backend", "webengine"]
 
 # RUN WITH
-# docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ~/.config:${HOME}/.config qutebrowser-dev
+# docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ~/.local:/home/developer/.local -v ~/.config:/home/developer/.config jgkamat/qutebrowser-dev
