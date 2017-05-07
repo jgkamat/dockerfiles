@@ -1,4 +1,4 @@
-FROM fedora:25
+FROM fedora:latest
 
 RUN dnf install -y python3-qt5-webengine qt5-qtwebengine python3-qt5-webkit git sudo bitstream-vera-serif-fonts bitstream-vera-sans-fonts bitstream-vera-sans-mono-fonts
 
